@@ -113,6 +113,48 @@ killall mosquitto_sub.bin 2> /dev/null
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
     ;;
 
+    "${TOPIC}/recording")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/recording ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(recording status)"
+    ;;
+
+    "${TOPIC}/recording/set ON")
+      recording on
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/recording ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(recording status)"
+    ;;
+
+    "${TOPIC}/recording/set OFF")
+      recording off
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/recording ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(recording status)"
+    ;;
+
+    "${TOPIC}/ftp_server")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ftp_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ftp_server status)"
+    ;;
+
+    "${TOPIC}/ftp_server/set ON")
+      ftp_server on
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ftp_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ftp_server status)"
+    ;;
+
+    "${TOPIC}/ftp_server/set OFF")
+      ftp_server off
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ftp_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ftp_server status)"
+    ;;
+
+    "${TOPIC}/timelapse")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/timelapse ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(timelapse status)"
+    ;;
+
+    "${TOPIC}/timelapse/set ON")
+      timelapse on
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/timelapse ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(timelapse status)"
+    ;;
+
+    "${TOPIC}/timelapse/set OFF")
+      timelapse off
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/timelapse ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(timelapse status)"
+    ;;
+
     "${TOPIC}/night_mode")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(night_mode status)"
     ;;
@@ -215,14 +257,14 @@ killall mosquitto_sub.bin 2> /dev/null
 		TARGET=$(busybox expr $MAX_Y - $MOTORSTATE)
 	  else
 		TARGET=$MOTORSTATE
-	  fi	   
+	  fi
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$TARGET"
     ;;
 
     "${TOPIC}/motors/vertical/set "*)
       COMMAND=$(echo "$line" | awk '{print $2}')
       MOTORSTATE=$(motor status vertical)
-      if [ -n "$COMMAND" ] && [ "$COMMAND" -eq "$COMMAND" ] 2>/dev/null; then   
+      if [ -n "$COMMAND" ] && [ "$COMMAND" -eq "$COMMAND" ] 2>/dev/null; then
         if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
           echo Changing motor from $COMMAND to $MOTORSTATE
           TARGET=$(busybox expr $MOTORSTATE + $COMMAND - $MAX_Y)
@@ -240,7 +282,7 @@ killall mosquitto_sub.bin 2> /dev/null
         echo Requested $COMMAND is not a number
       fi
     ;;
-	
+
     "${TOPIC}/motors/horizontal/set left")
       motor left
 	  MOTORSTATE=$(motor status horizontal)

@@ -3,10 +3,10 @@
 . /system/sdcard/config/mqtt.conf
 . /system/sdcard/scripts/common_functions.sh
 
-MAC=$(cat /sys/class/net/wlan0/address)                                         
-MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)                        
-MANUFACTURER="Xiaomi"                                                           
-MODEL="Dafang"                                                                  
+MAC=$(cat /sys/class/net/wlan0/address)
+MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)
+MANUFACTURER="Xiaomi"
+MODEL="Dafang"
 VER="Dafang Hacks"
 
 # Motion sensor
@@ -50,6 +50,14 @@ fi
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/rtsp_h264_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME h264 rtsp server\", \"unique_id\": \"$MAC_SIMPLE-h264-rtsp-server\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:cctv\", \"state_topic\": \"$TOPIC/rtsp_h264_server\", \"command_topic\": \"$TOPIC/rtsp_h264_server/set\"}"
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/rtsp_mjpeg_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME mjpeg rtsp server\", \"unique_id\": \"$MAC_SIMPLE-mjpeg-rtsp-server\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:cctv\", \"state_topic\": \"$TOPIC/rtsp_mjpeg_server\", \"command_topic\": \"$TOPIC/rtsp_mjpeg_server/set\"}"
 
+# Recording
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/recording/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME recording\", \"unique_id\": \"$MAC_SIMPLE-recording\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:record-circle\", \"state_topic\": \"$TOPIC/recording\", \"command_topic\": \"$TOPIC/recording/set\"}"
+
+# FTP Server
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/ftp_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME ftp_server\", \"unique_id\": \"$MAC_SIMPLE-ftp_server\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:server\", \"state_topic\": \"$TOPIC/ftp_server\", \"command_topic\": \"$TOPIC/ftp_server/set\"}"
+
+# Timelapse
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/timelapse/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME timelapse\", \"unique_id\": \"$MAC_SIMPLE-timelapse\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:timelapse\", \"state_topic\": \"$TOPIC/timelapse\", \"command_topic\": \"$TOPIC/timelapse/set\"}"
 
 # Motor up/down/left/right
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/cover/$DEVICE_NAME/motor_up_down/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME move up/down\", \"unique_id\": \"$MAC_SIMPLE-move-up-down\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"set_position_topic\": \"$TOPIC/motors/vertical/set\", \"position_topic\": \"$TOPIC/motors/vertical\", \"command_topic\": \"$TOPIC/motors/vertical/set\", \"payload_close\": \"down\", \"payload_open\": \"up\", \"optimistic\": \"false\", \"value_template\": \"{{ ((value|int)/($MAX_Y/$STEP))|round }}\", \"set_position_template\": \"{{ ((position|int)*($MAX_Y/$STEP))|round }}\"}"
